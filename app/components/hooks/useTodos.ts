@@ -15,7 +15,6 @@ const STORAGE_KEY = "portfolio-todo-app";
 
 export function useTodos() {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [newTodo, setNewTodo] = useState<Todo>();
 //   const [filter, setFilter] =
 //     useState<TodoStatus>("all");
   const [isLoaded, setIsLoaded] = useState(false);
@@ -23,6 +22,7 @@ export function useTodos() {
 //   Llama una vez para obtener todos los todos al inicio
   useEffect(() => {
     try {
+      console.log('otra vez, todo?')
      fetch('https://dummyjson.com/todos')
       .then(res => res.json())
       .then((data) => {
@@ -49,77 +49,12 @@ export function useTodos() {
     }
   }, []);
 
-// //   Llama cada vez que se agrega un TO-DO 
-//     useEffect( () => {
-//         try{
-//             if(newTodo && newTodo.description){
-//                 fetch('https://dummyjson.com/todos/add', {
-//                     body: JSON.stringify({
-//                       todo: newTodo.description,
-//                       completed: newTodo.completed,
-//                       userId: 5,
-//                     })
-//                   })
-//                   .then(res => res.json())
-//                   .then((respTodo) => newTodo.id = respTodo.id);
-//             }
-//         }catch(error){
-
-//         }
-//     }, [newTodo]);
-
-//   useEffect(() => {
-//     if (!isLoaded) {
-//       return;
-//     }
-
-//     try {
-//       window.localStorage.setItem(
-//         STORAGE_KEY,
-//         JSON.stringify(todos),
-//       );
-//     } catch (error) {
-//       console.error(
-//         "No fue posible guardar las tareas:",
-//         error,
-//       );
-//     }
-//   }, [todos, isLoaded]);
-
-//   const filteredTodos = useMemo(() => {
-//     if (filter === "active") {
-//       return todos.filter(
-//         (todo) => !todo.completed,
-//       );
-//     }
-
-//     if (filter === "completed") {
-//       return todos.filter(
-//         (todo) => todo.completed,
-//       );
-//     }
-
-//     return todos;
-//   }, [todos, filter]);
-
-//   const remainingCount = useMemo(() => {
-//     return todos.filter(
-//       (todo) => !todo.completed,
-//     ).length;
-//   }, [todos]);
-
-//   const completedCount = useMemo(() => {
-//     return todos.filter(
-//       (todo) => todo.completed,
-//     ).length;
-//   }, [todos]);
-
-  function getAllTodo(){
-    return todos;
-  }
+  // function getAllTodo(){
+  //   console.log('se repite?')
+  //   return todos;
+  // }
   function addTodo(title: string) {
     const cleanTitle = title.trim();
-
     if (!cleanTitle) {
       return;
     }
@@ -129,18 +64,19 @@ export function useTodos() {
       description: cleanTitle,
       completed: false,
       createdAt: new Date().toISOString(),
+      userId: 6
     };
-                fetch('https://dummyjson.com/todos/add', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                              todo: newTodo.description,
-                              completed: newTodo.completed,
-                              userId: 5,
-                            })
-                          })
-                          .then(res => res.json())
-                          .then((respTodo) => newTodo.id = respTodo.id);
-    setNewTodo(newTodo);
+      fetch('https://dummyjson.com/todos/add', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    todo: newTodo.description,
+                    completed: newTodo.completed,
+                    userId: 6,
+                  })
+                })
+                .then(res => res.json())
+                .then((respTodo) => newTodo.id = respTodo.id);
     setTodos((currentTodos) => [
       newTodo,
       ...currentTodos,
@@ -148,25 +84,25 @@ export function useTodos() {
   }
 
   function toggleTodo(id: string) {
-    setTodos((currentTodos) =>
-      currentTodos.map((todo) =>{
+    const currentTodos = todos.map( (todo) => {
         if (todo.id === id){
-            todo.completed = !todo.completed
+          todo.completed = !todo.completed
+          fetch(`https://dummyjson.com/todos/${id}`, {
+              method: 'PUT', /* or PATCH */
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+              completed: todo.completed,
+              })
+          })
+          .then(res => res.json())
+          .then(console.log);
         }
-            /* updating completed status of todo with id 1 */
-            fetch(`https://dummyjson.com/todos/${id}`, {
-                method: 'PUT', /* or PATCH */
-                body: JSON.stringify({
-                completed: todo.completed,
-                })
-            })
-            .then(res => res.json())
-            .then(console.log);
         return todo;
-        // return todo.id === id ? {...todo, completed: !todo.completed} : todo
+
+    })
+    if (currentTodos.length > 0 ){
+      setTodos(currentTodos);
     }
-     ),
-    );
   }
 
   function deleteTodo(id: string) { 
@@ -203,6 +139,5 @@ export function useTodos() {
     deleteTodo,
     clearCompleted,
     // setFilter,
-    getAllTodo,
   };
 }

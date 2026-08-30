@@ -51,7 +51,8 @@ export function TodoApp() {
     deleteTodo,
     // setFilter,
     clearCompleted,
-    getAllTodo,
+    // getAllTodo,
+    todos,
   } = useTodos();
 
   if (!isLoaded) {
@@ -76,7 +77,7 @@ export function TodoApp() {
       /> */}
 
       <TodoList
-        todos={getAllTodo()}
+        todos={todos}
         onToggle={toggleTodo}
         onDelete={deleteTodo}
       />
