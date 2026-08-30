@@ -1,9 +1,10 @@
 
 export type TodoStatus = true | false;
-export interface Welcome1 {
-    id:        number;
-    todo:      string;
+export interface Todo {
+    id:        string;
+    description:      string;
     completed: TodoStatus;
-    userId:    number;
+    userId?:    number;
+    createdAt?: string;
 }
 
