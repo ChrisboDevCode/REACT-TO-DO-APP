@@ -2,7 +2,7 @@
 
 Aplicación de gestión de tareas desarrollada con Next.js, React y TypeScript.
 
-El proyecto consume una API REST de demostración para obtener y administrar tareas. Su objetivo es practicar componentes reutilizables, hooks, peticiones asíncronas, manejo de estados y organización de una aplicación frontend.
+El proyecto consume una API REST de demostración para obtener y administrar tareas utilizando componentes reutilizables, hooks, peticiones asíncronas, manejo de estados y organización de una aplicación frontend.
 
 ## Funcionalidades
 
