@@ -6,7 +6,7 @@ El proyecto consume una API REST de demostración para obtener y administrar tar
 
 ## Funcionalidades
 
-- Obtener tareas desde una API.
+- La aplicación consume una API REST de demostración para obtener tareas y simular operaciones de creación, actualización y eliminación. Los cambios se gestionan localmente en el estado de la aplicación.
 - Mostrar estados de carga.
 - Manejar errores de conexión.
 - Agregar nuevas tareas.
